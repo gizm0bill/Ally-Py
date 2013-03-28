@@ -105,36 +105,16 @@ function($, superdesk, Gizmo, Action, authView)
                 navData = {superdesk: {menu: self.displayMenu}};
             superdesk.login && $.extend(navData, {user: superdesk.login});
 
-            self.el
-            .html('')
-            .tmpl('navbar', navData, function()
-            {
-                /*!
-                 * for submenus, we get their corresponding build scripts
-                 */
-                self.el.find('[data-submenu]').each(function()
-                {
-                    var submenuElement = this;
-                    Action.initApps(self.submenus[$(this).attr('data-submenu')], submenuElement, self.el);
-                    
-                    return true;
-                    
-                    Action.getMore( self.submenus[$(this).attr('data-submenu')] )
-                    .done(function(subs)
-                    {
-                        $(subs).each(function()
-                        { 
-                            require([this.get('Script').href], function(submenuApp)
-                            { 
-                                submenuApp && submenuApp.init && submenuApp.init(submenuElement, self.el); 
-                            }); 
-                        });
-
+            self.el.
+                html('').
+                tmpl('navbar', navData, function() {
+                    // for submenus, we get their corresponding build scripts
+                    self.el.find('[data-submenu]').each(function() {
+                        var submenuElement = this;
+                        Action.initApps(self.submenus[$(this).attr('data-submenu')], submenuElement, self.el);
                     });
                 });
-            });
 
-            Backbone.history.start({root: "/content/lib/core/start.html"});
             return this;
         },
         /*!
