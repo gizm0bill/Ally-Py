@@ -40,20 +40,26 @@ require(['concat'], function(){
 	([
 	  config.cjs('views/menu.js'), 
 	  config.cjs('views/auth.js'), 
-	  'jquery', 'jquery/superdesk', 'gizmo/superdesk/action', 'jquery/i18n', 'jqueryui/ext'
+	  'jquery', 'jquery/superdesk', 'gizmo/superdesk/action', 'jquery/i18n', 'jqueryui/ext',
+
+      config.cjs('underscore.js'),
+      config.cjs('backbone.js'),
 	], 
 	function(MenuView, authView, $, superdesk, Action)
 	{
 	    $(authView).on('logout login', function(){ Action.clearCache(); });
+
         // initialize menu before auth because we have some events bound to auth there
         var menu = new MenuView({ el: $('#navbar-top') });
-	    $(menu).on('path-clear', function()
-	    {
-	        $.superdesk.applyLayout('layouts/dashboard', {}, function(){ Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder)); });
+
+        var router = new Backbone.Router;
+        router.route('', 'home', function() {
+	        $.superdesk.applyLayout('layouts/dashboard', {}, function(){
+                Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder));
+            });
 	    });
-	    // initialize navigation authentication display
-        $.superdesk.navigation.init(function(){ authView.render(); });
-	    // apply layout
-	    $(superdesk.layoutPlaceholder).html(authView.el);
+
+	    // render auth view
+        $(superdesk.layoutPlaceholder).html(authView.render().el);
 	});
 });

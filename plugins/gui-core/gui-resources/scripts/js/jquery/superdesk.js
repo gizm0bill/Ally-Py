@@ -1,4 +1,4 @@
-define(['jquery','jquery/rest','history','history/adapter'], function ($) {
+define(['jquery','jquery/rest'], function ($) {
 
 var superdesk = 
 {
@@ -146,88 +146,6 @@ var superdesk =
             return dfd;
         }
         return dfd.resolve(superdesk.cache.actions[path]);
-	},
-	/*!
-	 * 
-	 */
-	navigation: 
-	{
-	    _repository: {},
-	    _base: '',
-	    _startPathname: '',
-	    _titlePrefix: '',
-	    _homeTitle: '',
-	    getBase: function()
-	    {
-	        return this._base;
-	    },
-	    getStartPathname: function()
-        {
-            return this._startPathname;
-        },
-        consumeStartPathname: function()
-        {
-            var r = this._startPathname;
-            this._startPathname = '';
-            return r;
-        },
-        /*!
-         * bind a callback on history state or execute if already bound
-         */
-        bind: function(href, callback, title)
-        {
-            var History = window.History;
-            
-            if( $.trim(href) != '' && this._repository[href]  )
-            {
-                History.replaceState({href: href}, 
-                        title ? this._titlePrefix + title : null, 
-                        this._base + (!config.server_tech ? '?'+href : href));
-                return callback;
-            }
-            this._repository[href] = callback;
-
-            History.pushState({href: href}, 
-                    title ? this._titlePrefix + title : null, 
-                    this._base + (!config.server_tech ? '?'+href : href));
-            return callback;
-        },
-        /*!
-         * app base url:
-         *  check for standard base tag in html or just get the current url
-         */
-        init: function(callback)
-        {
-            var History = window.History, 
-                State = History.getState(),
-                self = this,
-                baseTag = $('base');
-            
-            History.options.debug = true;
-            this._base = baseTag.length ? baseTag.attr('href') : History.getPageUrl().split('?')[0].split('#')[0];
-            this._startPathname = window.History.getPageUrl().replace(this._base, '')
-                                    .replace(/^\/+|\/+$/g, '').replace(/^\?+/g, '').replace(/#/g, '');
-            var triggered;
-            History.Adapter.bind( window, 'statechange', function()
-            {
-                var State = History.getState();
-                (self._repository[State.data.href])();
-                triggered = true;
-            });
-            
-            if( typeof callback === 'function' )
-            {
-                this._repository[''] = callback;
-                this._base = this._base;
-                this._homeTitle = $(document).prop('title');
-                History.pushState( {href: ''}, $(document).prop('title'), this._base );
-                !triggered && History.Adapter.trigger( window, 'statechange' );
-            }
-        },
-        home: function()
-        {
-            History.replaceState( {href: ''}, this._homeTitle, this._base );
-        }
 	},
 	/*!
 	 * 

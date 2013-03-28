@@ -14,14 +14,7 @@ function($, superdesk, Gizmo, Action, authView)
         events: 
         { 
             "[data-logged-in]": { 'click' : 'loginHandler' },
-            "#navbar-logout": { 'click' : 'logoutHandler' },
-            '.brand': { 'click': 'home' }
-        },
-        
-        home: function(evt)
-        {
-            $.superdesk.navigation.home();
-            evt.preventDefault();
+            "#navbar-logout": { 'click' : 'logoutHandler' }
         },
         
         /*!
@@ -36,10 +29,11 @@ function($, superdesk, Gizmo, Action, authView)
         {
             var dfd = new $.Deferred,
                 self = this;
-                dfd.done(cb); 
-        
+                dfd.done(cb);
+
             this.displayMenu = [];
             this.submenus = {};
+            this.router = new Backbone.Router;
                 
             // get first level of registered menus
             Action.getMore('menu.*').done(function(mainMenus)
@@ -60,14 +54,25 @@ function($, superdesk, Gizmo, Action, authView)
                                 Subz = '[data-submenu="'+this.get('Path')+'"]';
                             self.submenus[this.get('Path')] = this.get('Path') + '.*';
                         }
-                        
+
                         // set menu data
-                        self.displayMenu.push($.extend({}, this.feed(), 
-                        { 
+                        var item = $.extend({}, this.feed(), {
                             Path: this.get('Path').split('.'), 
                             Name: this.get('Path').replace('.', '-'),
                             Subs: Subs
-                        }));
+                        });
+
+                        if ('NavBar' in item) {
+                            self.router.route(item.NavBar.substr(1), item.Label, function() {
+                                require([item.Script.href], function(app) {
+                                    if ('init' in app) {
+                                        app.init();
+                                    }
+                                });
+                            });
+                        }
+
+                        self.displayMenu.push(item);
                     });
                     dfd.resolve(self);
                 });
@@ -86,8 +91,8 @@ function($, superdesk, Gizmo, Action, authView)
             this.displayMenu = [];
             // refresh menu on login/logout
             $(authView).on('login logout', function(evt){ self.refresh(); });
-            
-            this.el.on('refresh-menu', function(){ self.getMenu(self.render, 'refresh'); });
+
+            this.el.on('refresh-menu', self.refresh);
         },
         /*!
          * Deferred callback
@@ -123,55 +128,13 @@ function($, superdesk, Gizmo, Action, authView)
                                 submenuApp && submenuApp.init && submenuApp.init(submenuElement, self.el); 
                             }); 
                         });
+
                     });
                 });
-            })
-            .off('click.superdesk')
-            .on('click.superdesk', '.nav > li > a', function(event)
-            {
-                var self = this;
-                if ( $(self).attr('data-action') == 'help' ) {
-                    window.open($(self).attr('data-location'));
-                }
-
-                if(!$(self).attr('href')) return;
-                if(!$(self).attr('script-path')) { event.preventDefault(); return; }
-
-                $(self).attr('data-loader') != 'false' && superdesk.showLoader();
-                
-                var callback = function()
-                { 
-                    require([$(self).attr('script-path')], function(x){ x && x.init && x.init(); });
-                };
-                  
-                var href = $(self).attr('href').replace(/^\/+|\/+$/g, '');
-                if( $.trim(href) != '' )
-                    superdesk.navigation.bind( href, callback, $(self).text() || null );
-                else
-                    callback();
-                
-                event.preventDefault(); 
             });
-            
-            /*!
-             * redirect to current page on reload
-             * or trigger an event to notify the path is clear
-             */
-            var navHasInit = false;
-            if( superdesk.navigation.getStartPathname() != '')
-            {
-                self.el.find('li > a[href]').each(function()
-                {
-                    if( $(this).attr('href').replace(/^\/+|\/+$/g, '') == superdesk.navigation.getStartPathname())
-                    {
-                        navHasInit = true;
-                        superdesk.navigation.consumeStartPathname();
-                        $(this).trigger('click');
-                    }
-                });
-                !navHasInit && $(self).trigger('path-clear'); 
-            }
-            else $(self).trigger('path-clear');
+
+            Backbone.history.start({root: "/content/lib/core/start.html"});
+            return this;
         },
         /*!
          * login control

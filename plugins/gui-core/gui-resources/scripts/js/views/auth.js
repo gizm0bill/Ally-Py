@@ -195,10 +195,11 @@ function($, superdesk, gizmo, Action, jsSHA, AuthToken, AuthLogin)
             if( self._loggedIn ) 
             {
                 $(self).triggerHandler('login');
-                return true;   
+                return this;
             }
             // display authentication page
             $.tmpl('auth-page', {}, function(e, o){ self.el.html(o); });
+            return this;
         },
         /*!
          * login popup element

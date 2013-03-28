@@ -5,14 +5,14 @@
 			<span class="icon-bar">...</span>
 			<span class="icon-bar">...</span>
 		</a>
-		<a class="brand" href="#">Superdesk</a>
+		<a class="brand" href="#/">Superdesk</a>
 		<div class="nav-collapse">
 			<ul class="nav main">
 			<li class="divider-vertical"></li>
 			{#superdesk.menu}
 				<li class="dropdown">
-					<a href="{?NavBar}{NavBar}{:else}#{/NavBar}" script-path="{Script.href}" 
-						class="menu-{Name} dropdown-toggle" data-toggle="dropdown" {?Subs}data-loader="false"{/Subs}>
+					<a href="#{NavBar}" script-path="{Script.href}"
+						{?Subs}class="menu-{Name} dropdown-toggle" data-toggle="dropdown" data-loader="false"{:else}class="menu-{Name}"{/Subs}>
 						{Label} {?Subs}<b class="caret"></b>{/Subs}</a>
 					{?Subs}
 						<ul {Subs} class="dropdown-menu submenu-{Name}">
