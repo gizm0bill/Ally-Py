@@ -20,14 +20,10 @@ define('utils/class', function() {
 		// The dummy class constructor
 		function Class() {
 			// All construction is actually done in the init method
-			if ( !initializing && ( this._constructor || this._construct ) )
-				try { 
-					var constructor = this._construct || this._constructor; 
-					return constructor.apply(this, arguments);
-				}
-				catch(e) {
-					console.error(e);
-				}
+			if ( !initializing && ( this._constructor || this._construct ) ) {
+				var constructor = this._construct || this._constructor; 
+				return constructor.apply(this, arguments);
+            }
 		}
 
 		// Populate our constructed prototype object
