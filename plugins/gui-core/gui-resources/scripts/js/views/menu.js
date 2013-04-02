@@ -93,7 +93,7 @@ function($, superdesk, Gizmo, Action, authView)
             // refresh menu on login/logout
             $(authView).on('login logout', function(evt){ self.refresh(); });
 
-            this.el.on('refresh-menu', self.refresh);
+            this.el.on('refresh-menu', function() { self.refresh(); });
         },
         /*!
          * Deferred callback
