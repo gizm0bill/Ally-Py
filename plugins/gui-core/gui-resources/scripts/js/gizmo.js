@@ -939,29 +939,6 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
             }
             return this;
         },
-        /*!
-         * used to place events on this model,
-         * scope of the call method is sent as obj argument
-         */
-        one: function(evt, handler, obj)
-        {
-            if(obj === undefined) {
-                $(this).off(evt, handler);
-                $(this).one(evt, handler);
-            }
-            else {          
-                var newhandler = function(){
-                    handler.apply(obj, arguments);
-                };
-                $(this).off(evt, newhandler );
-                $(this).one(evt, newhandler );
-            }
-            var arrEvt = evt.split(" ");
-            for(var i = 0, count = arrEvt.length; i < count; i++ ){
-                this._events[arrEvt[i]] = true;
-            }
-            return this;
-        },
 		/*!
          * used to place events on this model,
          * scope of the call method is sent as obj argument
