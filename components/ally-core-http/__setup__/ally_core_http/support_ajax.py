@@ -16,6 +16,7 @@ from ally.design.processor.handler import Handler
 from ally.http.impl.processor.headers.set_fixed import HeaderSetEncodeHandler
 from ally.http.impl.processor.method_deliver_ok import DeliverOkForMethodHandler
 from ally.http.spec.server import HTTP_OPTIONS
+from .processor_error import assemblyErrorDelivery, updateAssemblyErrorDelivery
 
 # --------------------------------------------------------------------
 
@@ -51,3 +52,7 @@ def deliverOkForOptionsHandler() -> Handler:
 @ioc.after(updateAssemblyResources)
 def updateAssemblyResourcesForHTTPAjax():
     if ajax_cross_domain(): assemblyResources().add(headerSetAjax(), deliverOkForOptionsHandler(), after=headerEncodeResponse())
+    
+@ioc.after(updateAssemblyErrorDelivery)
+def updateAssemblyErrorForHTTPAjax():
+    if ajax_cross_domain(): assemblyErrorDelivery().add(headerSetAjax(), after=headerEncodeResponse())
