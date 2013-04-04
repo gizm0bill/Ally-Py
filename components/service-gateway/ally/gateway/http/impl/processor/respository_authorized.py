@@ -14,7 +14,7 @@ from ally.container.ioc import injected
 from ally.design.processor.attribute import requires, defines
 from ally.design.processor.context import Context
 from ally.design.processor.execution import Processing
-from ally.gateway.http.spec.gateway import IRepository
+from ally.gateway.http.spec.gateway import IRepository, Match
 from ally.http.spec.codes import BAD_REQUEST, BAD_GATEWAY, INVALID_AUTHORIZATION, \
     isSuccess
 from ally.http.spec.server import IDecoderHeader
@@ -31,10 +31,11 @@ class Request(Context):
     '''
     The request context.
     '''
-    # ---------------------------------------------------------------- Required
-    decoderHeader = requires(IDecoderHeader)
     # ---------------------------------------------------------------- Defined
     repository = defines(IRepository)
+    match = defines(Match)
+    # ---------------------------------------------------------------- Required
+    decoderHeader = requires(IDecoderHeader)
 
 class Response(Context):
     '''
@@ -83,6 +84,10 @@ class GatewayAuthorizedRepositoryHandler(GatewayRepositoryHandler):
             if robj is None or not isSuccess(status):
                 if status == BAD_REQUEST.status:
                     response.code, response.status, response.isSuccess = INVALID_AUTHORIZATION
+                    if request.repository:
+                        assert isinstance(request.repository, IRepository), 'Invalid repository %s' % request.repository
+                        request.match = request.repository.find(request.method, request.headers, request.uri,
+                                                                INVALID_AUTHORIZATION.status)
                 else:
                     log.info('Cannot fetch the authorized gateways from URI \'%s\', with response %s %s', self.uri, status, text)
                     response.code, response.status, response.isSuccess = BAD_GATEWAY

@@ -30,7 +30,7 @@ else:
     from __setup__.ally_core_http.server import server_pattern_resources, \
         server_pattern_errors, server_provide_errors
     from ally.http.spec.codes import METHOD_NOT_AVAILABLE, PATH_NOT_FOUND, \
-        UNAUTHORIZED_ACCESS, FORBIDDEN_ACCESS
+        UNAUTHORIZED_ACCESS, FORBIDDEN_ACCESS, INVALID_AUTHORIZATION
     from ally.http.spec.server import HTTP_OPTIONS
     
     @ioc.before(statusToCode)
@@ -66,7 +66,7 @@ else:
                                         },
                                        {
                                         'Pattern': server_pattern_resources(),
-                                        'Errors': [FORBIDDEN_ACCESS.status, METHOD_NOT_AVAILABLE.status],
+                                        'Errors': [INVALID_AUTHORIZATION.status, FORBIDDEN_ACCESS.status, METHOD_NOT_AVAILABLE.status],
                                         'Navigate': 'error/{1}',
                                         },
                                        ])
