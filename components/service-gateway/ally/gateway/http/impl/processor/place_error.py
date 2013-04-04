@@ -69,7 +69,7 @@ class GatewayErrorHandler(HandlerProcessorProceed):
         assert isinstance(response.status, int), 'Invalid response status %s' % response.status
         
         if request.parameters is None: request.parameters = []
-        request.parameters.append((self.nameStatus, response.status))
+        request.parameters.insert(0, (self.nameStatus, response.status))
         if response.status == METHOD_NOT_AVAILABLE.status and response.allows is not None:
             for allow in response.allows: request.parameters.append((self.nameAllow, allow))
         

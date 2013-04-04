@@ -77,12 +77,16 @@ class GatewayForwardHandler(HandlerBranching):
                 raise Exception('Invalid navigate URI \'%s\' for groups %s' % (match.gateway.navigate, match.groupsURI))
             url = urlparse(uri)
             request.uri = url.path.lstrip('/')
-            parameters = []
-            parameters.extend(parse_qsl(url.query, True, False))
-            parameters.extend(request.parameters)
+            parameters = parse_qsl(url.query, True, False)
+            if request.parameters: parameters.extend(request.parameters)
             request.parameters = parameters
         
         if match.gateway.putHeaders: request.headers.update(match.gateway.putHeaders)
         
         assert log.debug('Forwarding request to \'%s\'', request.uri) or True
+        # TODO: Gabriel, this is a temporary fix, we need to provide a handler that properly handles the response and response content
+        # isolation.
+        nresponse = chain.arg.response.__class__()
+        nresponseCnt = chain.arg.responseCnt.__class__()
+        chain.update(response=nresponse, responseCnt=nresponseCnt)
         chain.branch(processing)

@@ -19,7 +19,7 @@ from ally.design.processor.processor import Using
 from ally.gateway.http.spec.gateway import IRepository, Gateway, Match
 from ally.http.spec.codes import BAD_GATEWAY, isSuccess
 from ally.http.spec.server import RequestHTTP, ResponseHTTP, ResponseContentHTTP, \
-    HTTP_GET, HTTP
+    HTTP_GET, HTTP, HTTP_OPTIONS
 from ally.support.util_io import IInputStream
 from io import BytesIO
 from sched import scheduler
@@ -234,6 +234,8 @@ class Repository(IRepository):
             assert isinstance(gateway, Gateway)
             groupsURI = self._macth(gateway, None, headers, uri, None)
             if groupsURI is not None: allowed.update(gateway.methods)
+        # We need to remove auxiliar methods
+        allowed.discard(HTTP_OPTIONS)
         return allowed
         
     def obtainCache(self, identifier):
@@ -273,6 +275,7 @@ class Repository(IRepository):
                             break
                     if isOk: break
                 if not isOk: return
+        elif gateway.headers: return
                 
         if uri is not None:
             assert isinstance(uri, str), 'Invalid URI %s' % uri
@@ -280,11 +283,13 @@ class Repository(IRepository):
                 matcher = gateway.pattern.match(uri)
                 if matcher: groupsURI = matcher.groups()
                 else: return
+        elif gateway.pattern: return
                 
         if error is not None:
             assert isinstance(error, int), 'Invalid error %s' % error
             if gateway.errors:
                 if error not in gateway.errors: return
             else: return
+        elif gateway.errors: return
             
         return groupsURI
