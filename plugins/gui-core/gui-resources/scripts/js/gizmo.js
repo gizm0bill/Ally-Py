@@ -184,7 +184,6 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
             self._forDelete = false;
             self.clearChangeset();
             self._clientHash = null;
-            if( options && typeof options == 'object' ) $.extend(self, options);
             if( typeof data == 'object' ) {
                 self._parse(data);
             }
@@ -193,9 +192,11 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
                 //console.log('_constructor update', self.changeset);
                 self.triggerHandler('update', self.changeset).clearChangeset();
             }
-
+            options = $.extend({}, { init: true}, this.options);
+            options.init && this.init.apply(this, arguments);
             return self;
         },
+		init: function(){},
         /*!
          * adapter for data sync
          */
@@ -221,9 +222,17 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
                 }
             return ret;
         },
+        /*!
+         * Property href setter
+         */
+        setHref: function(href)
+        {
+            this.href = href;
+            return this;
+        },
         _setToUrl: function(){
             if(!this.href && this.url) {
-                this.href = this.url.get();
+                this.setHref(this.url.get());
             }
         },
         /*!
@@ -667,9 +676,14 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
             buildData.call(this);
             options = $.extend({}, { init: true}, this.options);
             options.init && this.init.apply(this, arguments);
-
         },
         init: function(){},
+		reset: function(models, options) {
+			if(!$.isArray(models))  models = [models];
+			models = this._parse(models);
+			this._list = models;
+			return this;
+		},
         get: function(key)
         {
             var dfd = $.Deferred(),
@@ -696,7 +710,7 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
         },
         syncAdapter: Sync,
         /*!
-         *
+         * Property href setter
          */
         setHref: function(href)
         {
