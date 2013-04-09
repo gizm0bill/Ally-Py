@@ -184,6 +184,7 @@ define('jqueryui/texteditor', ['jquery','jqueryui/widget', 'jqueryui/ext', 'jque
                     this.execute = function() 
                     {
                         document.execCommand(command, false, null);
+                        this.toggleState();
                         $(this).trigger('command-'+command+'.text-editor');
                     };
                     this.toggleState = function()
@@ -580,6 +581,21 @@ define('jqueryui/texteditor', ['jquery','jqueryui/widget', 'jqueryui/ext', 'jque
                         catch(e){ /*console.exception(e);*/ }
                     });
                     $(elements).trigger('toolbar-created');
+                    
+                    var justifyGrp = []
+                    for( var i=0; i<cmds.length; i++ )
+                        if( $.inArray(cmds[i].id, ['JustifyCenter', 'JustifyLeft', 'JustifyRight']) != -1 )
+                            justifyGrp.push(cmds[i]);
+                    
+                    $(justifyGrp).each(function(i, curCmd)
+                    {
+                        $(curCmd._elements).on('click', function()
+                        {
+                            for( var j=0; j<justifyGrp.length; j++ ) justifyGrp[j].toggleState();
+                            curCmd.toggleState();
+                        });
+                    });
+                    
                 };
             },
             controlElements: {},
