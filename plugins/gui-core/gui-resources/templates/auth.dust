@@ -4,13 +4,13 @@
 			<div class="control-group">
             	<label for="input01" class="control-label">Username</label>
             	<div class="controls">
-              		<input type="text" id="username" class="input-large" />
+              		<input type="text" id="username" class="input-medium" />
 				</div>
 			</div>
 			<div class="control-group">
             	<label for="password" class="control-label">Password</label>
             	<div class="controls">
-              		<input type="password" id="password" class="input-large" />
+              		<input type="password" id="password" class="input-medium" />
 				</div>
 			</div>
 			<div class="control-group">
