@@ -198,6 +198,7 @@ section.main-section {
     padding: 3px 5px;
 	font-size:12px;
 }
+
 /*
 ====================================================
   Custom popover
@@ -1477,12 +1478,10 @@ figure {
 	margin-bottom: -5px;
 	margin-left: 0px !important ;
 }
-.internal-collaborators .dropdown-simple a .caret,
-.plain-table .dropdown-simple a .caret {
+.internal-collaborators .dropdown-simple a .caret {
 	margin-top: 10px;
 }
-.internal-collaborators .dropdown-simple,
-.plain-table .dropdown-simple {
+.internal-collaborators .dropdown-simple {
 	display: inline-block;
 	float: right;
 }
@@ -1490,9 +1489,7 @@ figure {
 	margin-top: 4px;
 	line-height: 22px;
 }
-.internal-collaborators .dropdown-simple li,
-.plain-table .dropdown-simple li, 
-.small-plain .dropdown-simple li {
+.internal-collaborators .dropdown-simple li {
 	padding: 0 !important;
 	border: 0 !important;
 	height: auto !important;
@@ -1503,38 +1500,6 @@ figure {
 }
 .internal-collaborators li.selected .dropdown-simple {
 	display: block;
-}
-
-.plain-table {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
-}
-
-.small-plain {
-	max-height: 150px;
-	overflow-y: scroll; 
-}
-
-.small-plain li {
-	padding: 3px 5px !important;
-}
-
-.plain-table li {
-	padding: 7px 5px;
-	border-bottom:1px solid #e5e5e5;
-	height: 22px;
-	cursor: pointer;
-	position: relative;
-}
-
-.plain-table li:hover {
-	background: #e8f0ff;
-}
-
-.plain-table figure {
-	float: left;
-	margin-right: 10px;
 }
 
 a.collaborator-name  {
