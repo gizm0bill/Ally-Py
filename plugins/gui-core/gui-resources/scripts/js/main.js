@@ -50,10 +50,6 @@ require(['concat', 'backbone'], function(){
 	], 
 	function(MenuView, authView, $, superdesk, Action, Backbone)
 	{
-        if (Backbone.$ === undefined) {
-            Backbone.$ = $;
-        }
-
 	    $(authView).on('logout login', function(){ Action.clearCache(); });
 
         // initialize menu before auth because we have some events bound to auth there
