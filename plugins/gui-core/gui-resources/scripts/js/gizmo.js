@@ -1040,6 +1040,8 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
         namespace: 'view',
         _constructor: function(data, options)
         {
+            if(this.events && data && data.events)
+                $.extend(data.events, this.events);
             $.extend(this, data);
             options = $.extend({}, { init: true, events: true, ensure: true}, options);
 			options.ensure && this._ensureElement();
