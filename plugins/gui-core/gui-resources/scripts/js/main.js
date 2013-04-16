@@ -55,14 +55,22 @@ require(['concat', 'backbone'], function(){
         // initialize menu before auth because we have some events bound to auth there
         var menu = new MenuView({ el: $('#navbar-top') });
 
-        var router = new Backbone.Router;
-        router.route('', 'home', function() {
-	        $.superdesk.applyLayout('layouts/dashboard', {}, function(){
-                Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder));
-            });
-	    });
+        var Router = Backbone.Router.extend({
+            routes: {
+                '': 'home'
+            },
+
+            home: function() {
+	            $.superdesk.applyLayout('layouts/dashboard', {}, function() {
+                    Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder));
+                });
+            }
+        });
 
 	    // render auth view
         $(superdesk.layoutPlaceholder).html(authView.render().el);
+
+        new Router();
+        Backbone.history.start({root: window.location.pathname});
 	});
 });
