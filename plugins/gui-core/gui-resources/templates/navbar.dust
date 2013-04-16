@@ -59,6 +59,24 @@
 				<li>
 					<a href="http://en.flossmanuals.net/live-blog-en-1-0/" data-toggle="modal" data-action="help" target="_blank" data-location="http://en.flossmanuals.net/live-blog-en-1-0/">Help</a>
 				</li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">English <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#">English</a>
+						</li>
+						<li>
+							<a href="#">French</a>
+						</li>
+						<li>
+							<a href="#">Spanish</a>
+						</li>
+						<li>
+							<a href="#">German</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 		</div>
 	</div>
