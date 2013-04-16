@@ -83,13 +83,13 @@ function( gizmo, $, Actions )
             var args = []; 
             Array.prototype.push.apply( args, arguments );
             args.shift();
-            return this.getMore(path).done(function( apps )
-            {
-                for( var i=0; i<apps.length; i++ )
-                {
-                    apps[i].get('Script') && require([apps[i].get('Script').href], function(app)
-                    {
-                        app && app.init && app.init.apply( app, args );
+            return this.getMore(path).done(function(apps) {
+                for (var i = 0; i < apps.length; i++) {
+                    var action = apps[i];
+                    apps[i].get('Script') && require([apps[i].get('Script').href], function(app) {
+                        args.push(action);
+                        app && app.init && app.init.apply(app, args);
+                        args.pop();
                     });
                 }
             });
