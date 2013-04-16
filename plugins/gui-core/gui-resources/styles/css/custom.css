@@ -974,11 +974,7 @@ li.google .config-notif, li.ads .config-notif, li.flickr .config-notif, li.youtu
 	min-height: 400px;
 	position: relative;
 }
-.fullwidth-input {
-	width: 100%;
-	box-sizing: border-box;
-	height: 28px;
-}
+
 .small-legend {
 	margin-bottom: 10px;
 }
@@ -1715,9 +1711,6 @@ a.collaborator-name-large  {
 	background: url(../../images/collapse-open.png) no-repeat 26px 50%;
 }
 
-.fullwidth-input {
-	width: 520px;
-}
 .small-legend {
 	margin-bottom: 10px;
 }
@@ -1868,7 +1861,11 @@ ul.posttypes li {
 
 
 
-
+.dummy-info {
+	color: #7e7e7e;
+	font-size: 12px;
+	padding: 5px 0 10px;
+}
 
 
 

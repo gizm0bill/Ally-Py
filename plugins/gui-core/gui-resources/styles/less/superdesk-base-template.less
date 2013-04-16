@@ -16,6 +16,11 @@ body {
   height:100%;
 }
 
+
+.btn {
+	.border-radius(3px);
+}
+
 .navbar {
 
 	.brand {
@@ -218,10 +223,15 @@ body {
   		}
   }
 }
-
-
-.btn {
-	.border-radius(3px);
+.popup-subnav {
+	margin: -15px -15px 0 -15px;
+	border-width: 0 0 1px 0;
+	height: 48px !important;
+	padding: 10px;
+	margin-bottom: 15px;
+	.nav-pills li a {
+		padding: 6px 10px !important;
+	}
 }
 
 .navbar-fixed-top .navbar-inner {
@@ -243,4 +253,34 @@ body {
 .article-list .main-content-container {
 	padding: @main-content-padding;
 	padding-top: @subnav-height + @subnav-level2 + @main-content-padding;
+}
+
+
+
+
+input[type="text"], textarea, select {
+	.border-radius(2px) !important;
+	border-color: #d0d0d0 !important;
+	padding: 6px;
+	height: 27px;
+	outline:none !important;
+	&:focus {
+		.box-shadow(0px 0px 5px 0px #d0d0d0) !important; 
+		border-color: #b8b8b8 !important;
+		outline:none !important;
+	}
+}
+
+
+.fullwidth-input {
+	width: 100%;
+	.box-sizing(border-box);	
+	height: 28px;
+}
+
+.btn {
+	outline:none !important;
+	&:focus {
+		outline:none !important;
+	}
 }

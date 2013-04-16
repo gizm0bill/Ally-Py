@@ -359,7 +359,7 @@
 			}
 		}
 	}
-	&.googlelink, &.googlenews, &.twitter {
+	&.googlelink, &.googlenews, &.twitter, &.facebook  {
 		.result-content {
 			.border-radius(2px 2px 0 0);
 			border: 1px solid #e5e5e5;
@@ -409,6 +409,21 @@
 			.source-icon {
 				background-image:url(../../images/twitter-16px.png);
 			}
+		}
+	}
+
+	&.facebook {
+		.result-content {
+			figure {
+				display: none;
+			}
+			.result-text {
+				padding-left: 50px;
+			}
+		}
+		.attributes {
+			padding-top: 3px;
+			
 		}
 	}
 	&.youtube, &.soundcloud {
@@ -551,6 +566,13 @@ overrides
 			overflow: hidden;
 		}
 	}
+	&.twitter, &.facebook {
+		.result-content {
+			.result-text {
+				padding-left: 0;
+			}
+		}
+	}
 }
 
 #timeline-view .post-list li
@@ -628,7 +650,7 @@ overrides
 				}
 			}
 		}
-		&.twitter {
+		&.twitter, &.facebook {
 			.result-content {
 				min-height: 45px ; /* beacause of avatar height*/
 				figure {
@@ -995,7 +1017,7 @@ overrides
 
 			}
 		}
-        &.googlelink, &.googlenews, &.twitter {
+        &.googlelink, &.googlenews, &.twitter, &.facebook {
         	border:0;
 			.result-content {
 				.border-radius(2px 2px 0 0) ;
@@ -1033,7 +1055,7 @@ overrides
 				}
 			}
 		}
-		&.twitter {
+		&.twitter, &.facebook {
 			.result-content {
 				min-height: 45px ; /* beacause of avatar height*/
 				figure {
@@ -1085,6 +1107,14 @@ overrides
 				}
 			}
 		}
+		&.facebook {
+			.result-content {
+				.result-text {
+					padding-left: 50px;
+				}
+			}	
+		}
+		
 		&.youtube {
 			.source-icon {
 				background-image:none; 
@@ -1214,7 +1244,7 @@ overrides
     .result-content-full {
     	padding-left: 60px;
     }
-    &.googlelink, &.googlenews, &.twitter {
+    &.googlelink, &.googlenews, &.twitter, &.facebook {
 		.result-content {
 			padding: 7px 10px 0 10px;
 		}
@@ -1227,7 +1257,7 @@ overrides
 			display: block;
 		}
 	}
-	&.twitter {
+	&.twitter, &.facebook {
 		.attributes {
 			padding-top: 3px;
 		}
@@ -1516,9 +1546,12 @@ overrides
 	right:13px;
 	left:0;
 	background-color:#f9f9f9;
-	border:1px solid #ebebeb;
+	border:1px solid #ddd;
 	border-width:0 1px 1px;
 	z-index:10;
+	.box-shadow(0px 2px 3px 0 #f0f0f0);
+	.border-radius(0px 0px 5px 5px);
+
 }
 
 .chain-header {
@@ -1536,6 +1569,7 @@ overrides
 		width: 100%;
 		.border-radius(3px);
 	}
+	.border-radius(0 0 5px 5px);
 }
 .chainblogs {
 	top: 130px !important;
