@@ -354,8 +354,10 @@ class DecodePrimitive:
         if value is not None:
             if not isinstance(value, str): return False
             # If the value is not a string then is not valid
-            try: value = converter.asValue(value, self.typeValue)
-            except ValueError: return False
+            if value:
+                try: value = converter.asValue(value, self.typeValue)
+                except ValueError: return False
+            else: value = None
         self.setter(target, value)
         return True
 
