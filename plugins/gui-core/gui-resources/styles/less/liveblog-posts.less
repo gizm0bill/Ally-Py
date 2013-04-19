@@ -828,6 +828,18 @@ overrides
 				}
 			}
 		}
+		&.adverts{
+			.result-content-full {
+				.border-radius(2px);
+				border: 1px solid #e5e5e5;
+				padding: 7px 10px;
+				background: #f5f5f5;
+				.result-content {
+					padding-left: 5px;
+				}
+			}
+		}
+
 		
 	}
 } 
@@ -1151,6 +1163,16 @@ overrides
 		&.flickr {
 			width:75px !important;
 			height:75px !important;
+		}
+		&.adverts{
+			.result-content-full {
+				border: 0;
+				padding: 7px 10px;
+				background: #fff;
+				.result-content {
+					padding: 0 0 0 5px;
+				}
+			}
 		}
 }
 .post-draggable {
@@ -1525,7 +1547,22 @@ overrides
 
 .search-result-list.ads
 {
-	top: 10px;
+	top: 60px !important;
+}
+
+#ads {
+	.edit-block {
+		display: none;
+	}
+	&.add-new-ad {
+		.search-result-list {
+			top: 300px !important;
+		}
+		.edit-block {
+			display: block;
+			padding-top: 60px !important;
+		}
+	}
 }
 
 #navbar-top .loader{ display: none; width: 80px }
@@ -1583,6 +1620,7 @@ overrides
 .ads-header {
 	h4 {
 		margin:6px 0 5px 0;
+		float:left;
 	}
 }
 
