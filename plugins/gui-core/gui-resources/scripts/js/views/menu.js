@@ -3,11 +3,12 @@ define
     'jquery','jquery/superdesk', 'gizmo/superdesk', 
     'gizmo/superdesk/action',
     config.cjs('views/auth.js'),
+    'router',
     'dust/core','jquery/tmpl','jquery/rest', 'bootstrap',  
     'tmpl!layouts/dashboard',
     'tmpl!navbar'
 ], 
-function($, superdesk, Gizmo, Action, authView)
+function($, superdesk, Gizmo, Action, authView, router)
 {
     var MenuView = Gizmo.View.extend
     ({
@@ -33,7 +34,6 @@ function($, superdesk, Gizmo, Action, authView)
 
             this.displayMenu = [];
             this.submenus = {};
-            this.router = new Backbone.Router;
                 
             // get first level of registered menus
             Action.getMore('menu.*').done(function(mainMenus)
@@ -63,7 +63,7 @@ function($, superdesk, Gizmo, Action, authView)
                         });
 
                         if ('NavBar' in item) {
-                            self.router.route(item.NavBar.substr(1), item.Label, function() {
+                            router.route(item.NavBar.substr(1), item.Label, function() {
                                 require([item.Script.href], function(app) {
                                     if ('init' in app) {
                                         app.init();

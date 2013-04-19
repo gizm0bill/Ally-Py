@@ -27,7 +27,8 @@ requirejs.config
 		'newgizmo': config.cjs('newgizmo'),
         'backbone': config.cjs('backbone'),
         'underscore': config.cjs('underscore'),
-        'moment': config.cjs('moment')
+        'moment': config.cjs('moment'),
+        'router': config.cjs('router')
 	},
     shim: {
         'backbone': {
@@ -45,32 +46,23 @@ require(['concat', 'backbone'], function(){
 	  config.cjs('views/menu.js'), 
 	  config.cjs('views/auth.js'), 
 	  'jquery', 'jquery/superdesk', 'gizmo/superdesk/action',
-      'backbone',
+      'router',
       'jquery/i18n', 'jqueryui/ext'
 	], 
-	function(MenuView, authView, $, superdesk, Action, Backbone)
+	function(MenuView, authView, $, superdesk, Action, router)
 	{
 	    $(authView).on('logout login', function(){ Action.clearCache(); });
 
         // initialize menu before auth because we have some events bound to auth there
         var menu = new MenuView({ el: $('#navbar-top') });
 
-        var Router = Backbone.Router.extend({
-            routes: {
-                '': 'home'
-            },
-
-            home: function() {
-	            $.superdesk.applyLayout('layouts/dashboard', {}, function() {
-                    Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder));
-                });
-            }
-        });
-
 	    // render auth view
         $(superdesk.layoutPlaceholder).html(authView.render().el);
 
-        new Router();
-        Backbone.history.start({root: window.location.pathname});
+        router.route('', 'home', function() {
+	        $.superdesk.applyLayout('layouts/dashboard', {}, function() {
+                Action.initApps('modules.dashboard.*', $($.superdesk.layoutPlaceholder));
+            });
+        });
 	});
 });
