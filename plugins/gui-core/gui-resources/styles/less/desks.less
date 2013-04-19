@@ -96,6 +96,12 @@
     text-transform: uppercase;
     padding-left: 7px;
     font-weight: bold;
+    .dropdown {
+      margin-top: 1px;
+      line-height: 14px;
+      text-transform: none;
+      text-shadow:none;
+    }
   }
 
 
@@ -448,6 +454,7 @@
         color: #ffffff;
         text-shadow: 0 -1px 0 #333;
         background: #686868  url('../../images/desk-list-mask.png') no-repeat right 0;
+
       }
 
 
@@ -818,6 +825,11 @@
         &:before {
           content: "Limit: ";
           color: #999;
+          margin-top: 2px;
+        }
+        input {
+          width: 50px !important;
+          margin-top: -3px;
         }
       }
       &:before {

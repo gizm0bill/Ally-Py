@@ -14,7 +14,8 @@
 	padding: 0 !important;
 	.box-shadow(none);
 	&:focus {
-		.box-shadow(none);
+		.box-shadow(none) !important;
+		.box-shadow(inset none) !important;
 	}
 }
 
@@ -516,6 +517,10 @@
 	float: right;
 }
 
+.plain-table > li .sf-inline-input {
+	height: 24px;
+	width: 80%;
+}
 
 /* scratchpad */
 
