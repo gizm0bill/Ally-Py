@@ -187,8 +187,10 @@ define('gizmo', ['jquery', 'utils/class'], function($,Class)
             if( typeof data == 'object' ) {
                 self._parse(data);
             }
-			//console.log('Changes',self.changeset);
-            if(!$.isEmptyObject(self.changeset)) {
+            if(self.isDeleted()){
+                //console.log('pull remove');
+                self._remove();
+            } else if(!$.isEmptyObject(self.changeset)) {
                 //console.log('_constructor update', self.changeset);
                 self.triggerHandler('update', self.changeset).clearChangeset();
             }
