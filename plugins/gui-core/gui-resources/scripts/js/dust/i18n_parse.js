@@ -1,26 +1,73 @@
-define(['utils/json_parse'],function(json_parse){
+define(['utils/json_parse', 'utils/extend'],function(json_parse){
+/*!
+ * function to escape dust elements list left brackets {~lb}
+ *    and right brackets {~rb}
+ */
 function escape_dust(str){
+	
 	return str.replace(/\{/g,'{~lb').replace(/\}/g, '{~rb}').replace(/\{~lb/g,'{~lb}').replace(/((^|[^\\])(\\\\)*)"/g,'$1\\"');
 }
 
-function parseFunction(fnx, string, callback) {
-	var fnx = new RegExp(fnx+'\\((.*?)(\\);|\\))','gi');
+/*!
+ * Parser function 
+ * require first parameter `fnx` wich should be a string with the name from gettext lib
+ *   example: _,gettext, ngettext ...
+ * second parameter `string` the dust text to pe parse
+ * and last parameter the `replacerFnx` function that is called to replace the i18n gettext string
+ *   the replacerFnx should return a dust @i18n helper.
+ */
+function parseFunction(fnx, string, replacerFnx) {
+	/*!
+	 * Regular expresion that is used to search for gettext function
+	 *   also includs the `fnx` parameter for a better match
+	 * for now the gettext function must end with ;
+	 */
+	var fnx = new RegExp(fnx+'\\((.*?)(\\);)','gi');
+	/*!
+	 * Format regular expersion that is used when formating the gettext function 
+	 *   ex: _('Hello %s').format("World");
+	 *       gettext("Good to see you %s with %s").format(["Superdesk", 'Liveblog']);
+	 *       ngettext("One new post","%(Count)s new posts", {Count}).format({ "Count": {Count} });
+	 * be aware when sending dust parametters like {Count} they should be numbers and when sending
+	 *   strings should be like "{Count}" or '{Count}'
+	 */
 	var formatx = ').format(';
 	return string.replace(fnx, function(str_fn, inside_fn){
 		fstr = '';
 		if(inside_fn.indexOf(formatx)>-1) {
 			arr = inside_fn.split(formatx);
 			inside_fn = arr[0];
-			fparams = json_parse(arr[1].substr(1,arr[1].length-1));
+			/*!
+			 * Make sure no space was traped.
+			 */
+			fparams = arr[1].trim();
+			/*!
+			 * If the arguments in format aren't object or array
+			 *   make the arguments an array.
+			 */
+			if(fparams[0] !== '[' || fparams[0] !== '{')
+				fparams = '['+fparams+']';
+			/*!
+			 * use here a special json_parser function because the parameters
+			 *   can be not json default encoded.
+			 * ex: { hello: 'World'} if failing JSON.parse
+			 */
+			fparams = json_parse(fparams);
+			/*!
+			 * If it is an array then encode dust attributes like
+			 *    param1="Superdesk", param2="Liveblog", ...
+			 * If an object just use the key like
+			 *    hello="World", Count="{Count}", ...
+			 */
 			for(i in fparams) {
 				if(isNaN(i)) {
-					fstr += ' "'+i+'"="'+fparams[i]+'"';
+					fstr += ' '+i+'="'+fparams[i]+'"';
 				} else {
-					fstr += ' "param'+(parseInt(i)+1)+'"="'+fparams[i]+'"';
+					fstr += ' param'+(parseInt(i)+1)+'="'+fparams[i]+'"';
 				}
 			}
 		}
-		return callback(json_parse('['+inside_fn+']'),fstr);
+		return replacerFnx(json_parse('['+inside_fn+']'),fstr);
 	});
 }
 
