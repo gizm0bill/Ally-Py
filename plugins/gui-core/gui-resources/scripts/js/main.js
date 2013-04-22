@@ -26,7 +26,8 @@ requirejs.config
 		'concat': config.cjs('concat'),		
 		'newgizmo': config.cjs('newgizmo'),
         'backbone': config.cjs('backbone'),
-        'underscore': config.cjs('underscore')
+        'underscore': config.cjs('underscore'),
+        'moment': config.cjs('moment')
 	},
     shim: {
         'backbone': {
