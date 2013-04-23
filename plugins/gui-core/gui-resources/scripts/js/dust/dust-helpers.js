@@ -368,6 +368,8 @@ dust.filters.trim150 = function(string){ return string.trunc(150, true);}
 dust.filters.trim200 = function(string){ return string.trunc(200, true);}
 dust.filters.twitter_all = function(string) { return twitter.link.all(string); }
 
+dust.filters.strps = function(string){ return string.replace(/\s+|\t+|\r+|\n+/g, ''); }
+
 dust.filters.o = function(string){ console.log(string); return ''; }
 
 function getAnnotation(idx)
